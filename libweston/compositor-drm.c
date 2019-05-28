@@ -7541,6 +7541,8 @@ drm_backend_create(struct weston_compositor *compositor,
 		goto err_udev_dev;
 	}
 
+	weston_hdcp_create(compositor);
+
 	if (b->use_pixman) {
 		if (init_pixman(b) < 0) {
 			weston_log("failed to initialize pixman renderer\n");

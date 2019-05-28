@@ -175,9 +175,13 @@ if get_option('backend-drm')
 		'libbacklight.c',
 		'libinput-device.c',
 		'libinput-seat.c',
+		'hdcp.c',
 		linux_dmabuf_unstable_v1_protocol_c,
 		linux_dmabuf_unstable_v1_server_protocol_h,
 		presentation_time_server_protocol_h,
+		weston_hdcp_protocol_c,
+		weston_hdcp_server_protocol_h,
+		weston_hdcp_client_protocol_h,
 	]
 
 	deps_drm = [

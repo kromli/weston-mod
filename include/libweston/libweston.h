@@ -2386,6 +2386,9 @@ void
 weston_buffer_send_server_error(struct weston_buffer *buffer,
 				      const char *msg);
 
+void
+weston_hdcp_create(struct weston_compositor *compositor);
+
 #ifdef  __cplusplus
 }
 #endif

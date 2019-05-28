@@ -1,0 +1,15 @@
+<protocol name="weston_hdcp">
+
+  <interface name="weston_hdcp" version="1">
+    <description summary ="hdcp set property interface"/>
+
+    <request name="set_property">
+      <arg name="hdcp_drm_fd" type="int"/>
+      <arg name="hdcp_connector_id" type="int"/>
+      <arg name="hdcp_value" type="int"/>
+    </request>
+    <event name="done">
+    </event>
+  </interface>
+
+</protocol>
