@@ -7,9 +7,10 @@
 #include <wayland-client.h>
 #include "weston-hdcp-client-protocol.h"
 #include <wayland-server-core.h>
+#include <xf86drm.h>
+#include <xf86drmMode.h>
 
 struct hdcp_data {
-	int32_t drm_fd;
 	int32_t connector_id;
 	int32_t value;
 	struct wl_list output_list;
@@ -52,6 +53,14 @@ static const struct wl_registry_listener registry_listener = {
 	.global_remove = handle_global_remove
 };
 
+int32_t getDrmFd() {
+	int drmFd;
+	drmFd = drmOpen("i915", NULL);
+	if (drmFd < 0)
+		return drmFd;
+	return drmFd;
+}
+
 int main(int argc, char **argv) {
 	struct wl_display *display;
 	struct wl_registry *registry;
@@ -76,18 +85,25 @@ int main(int argc, char **argv) {
 	}
 	weston_hdcp_add_listener(data.w_hdcp, &w_hdcp_listener, &data);
 
-	printf("Please enter integer to be passed to backend: ");
-	scanf("%d", &data.drm_fd);
+
+	data.drm_fd = getDrmFd();
+	if(data.drm_fd < 0)
+		goto done;
+	data.connector_id = 78;
+	data.value = 1;
+
+//	printf("Please enter integer to be passed to backend: ");
+//	scanf("%d", &data.drm_fd);
 	
-	printf("Please enter integer to be passed to backend: ");
-	scanf("%d", &data.connector_id);
+//	printf("Please enter integer to be passed to backend: ");
+//	scanf("%d", &data.connector_id);
 	
-	printf("Please enter integer to be passed to backend: ");
-	scanf("%d", &data.value);
+//	printf("Please enter integer to be passed to backend: ");
+//	scanf("%d", &data.value);
 
 //	wl_display_dispatch(display);
-	weston_hdcp_set_property(data.w_hdcp, data.drm_fd, 
-				 data.connector_id, data.value);
+	weston_hdcp_set_property(data.w_hdcp, data.connector_id, data.value);
+done:
 	wl_display_roundtrip(display);
 	wl_registry_destroy(registry);
 	wl_display_flush(display);
